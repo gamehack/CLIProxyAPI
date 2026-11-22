@@ -416,6 +416,10 @@ func (h *Host) callQuotaFetch(ctx context.Context, record capabilityRecord, prov
 			}
 		}
 	}
+	// Present native Copilot credentials in the field names expected by quota plugins.
+	// This adapts only the in-memory quota request; the stored auth file is unchanged.
+	req.StorageJSON = adaptQuotaStorageJSON(req.Provider, req.StorageJSON)
+
 	if req.HTTPClient == nil {
 		req.HTTPClient = h.newHTTPClient(authRecord, req.Provider)
 	}
